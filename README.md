@@ -1,2 +1,2 @@
-# cleanpad
+# CleanPad
 CleanPad
