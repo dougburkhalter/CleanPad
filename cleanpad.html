@@ -1,34 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
     <head>
         <title>CleanPad</title>
         <style>
             html, body {
-                height: 100%;
+                height:100%;
                 width:100%;
                 margin:0;
                 padding:0;
                 border:0;
             }
-            #txtPad {
-                height: 100%;
-                width: 100%;
+            #text {
+                height:100%;
+                width:100%;
                 margin:0;
                 padding:0;
                 border:0;
-                resize: none;
+                resize:none;
+                z-index:0;
             }
-            #btnClear {
+            #count {
+                position:fixed;
+                bottom:0;
+                left:0;
+                font-size:large;
+                z-index:1;
+            }
+            #clear {
                 position: fixed;
-                bottom: 0;
-                right: 50%;
+                bottom:0;
+                right:50%;
                 left:50%;
-                font-size: larger;
+                font-size:large;
+                z-index:1;
+            }
+            #timer {
+                position:fixed;
+                bottom:0;
+                right:0;
+                font-size:large;
+                z-index:1;
             }
         </style>
     </head>
     <body>
-        <textarea id="txtPad" autofocus placeholder="Enter text here..."></textarea>
-        <input type="button" id="btnClear" value="Clear" onclick="txtPad.value='';txtPad.focus()">
+        <textarea id="text" autofocus placeholder="Enter text here..."></textarea>
+        <input type="button" id="count" value="0" title="Click to count up. Ctrl-click to count down.">
+        <input type="button" id="clear" value="Clear" title="Click to clear the pad.">
+        <input type="button" id="timer" value="00:00" title="Click to start timer.">
+
+        <script>
+            let running = false;
+            let paused = false;
+            let ticker;
+            let minutes = 0;
+            let seconds = 0;
+
+            function count(event) {
+                let count = document.getElementById("count");
+                //alert("You pressed button: " + event.which);
+                if (event.ctrlKey) {
+                    count.value--;
+                } else {
+                    count.value++;
+                }
+                document.getElementById("text").focus();
+            }
+            function clear() {
+                let text = document.getElementById("text");
+                text.value="";
+                text.focus();
+            }
+            function timer() {
+                let timer = document.getElementById("timer");
+                if (running == true) {
+                    clearInterval(ticker);
+                    running = false;
+                    paused = true;
+                    timer.title = "Click to reset timer."
+                } else if (paused == true) {
+                    timer.value="00:00";
+                    timer.title = "Click to start timer."
+                    running = false;
+                    paused = false;
+                } else {
+                    ticker = setInterval(timerTick, 1000);
+                    timer.title = "Click to stop timer."
+                    running = true;
+                    paused = false;
+                }
+                document.getElementById("text").focus();
+            }
+            function timerTick() {
+                let timer = document.getElementById("timer");
+                seconds++;
+                if (seconds == 60) {
+                    minutes++;
+                    seconds = 0;
+                }
+                timer.value = "";
+                if (minutes < 10) {
+                    timer.value = "0"
+                }
+                timer.value += minutes + ":";
+                if (seconds < 10) {
+                    timer.value += "0";
+                }
+                timer.value += seconds;
+            }
+            document.getElementById("count").addEventListener("click", count);
+            document.getElementById("clear").addEventListener("click", clear);
+            document.getElementById("timer").addEventListener("click", timer);
+        </script>
     </body>
 </html>
