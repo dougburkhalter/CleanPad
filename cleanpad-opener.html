@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>CleanPad Opener</title>
+        <style>
+            #open {
+                font-size:xx-large;
+            }
+        </style>
+    </head>
+    <body>
+        <input type="button" id="open" value="Open CleanPad" title="Open CleanPad in a new window.">
+        <script>
+            function opener() {
+                var cleanPad = window.open("cleanpad.html", "_blank", "resizable=yes,width=400,height=400");
+            }
+            document.getElementById("open").addEventListener("click", opener);
+        </script>
+    </body>
+</html>
