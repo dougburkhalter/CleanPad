@@ -79,6 +79,8 @@
                     timer.title = "Click to reset timer."
                 } else if (paused == true) {
                     timer.value="00:00";
+                    minutes=0;
+                    seconds=0;
                     timer.title = "Click to start timer."
                     running = false;
                     paused = false;
